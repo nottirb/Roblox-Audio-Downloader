@@ -1,0 +1,26 @@
+{
+  "name": "roblox-audio-downloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "download": "node downloader.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nottirb/Roblox-Audio-Downloader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nottirb/Roblox-Audio-Downloader/issues"
+  },
+  "homepage": "https://github.com/nottirb/Roblox-Audio-Downloader#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "axios": "^0.26.1"
+  }
+}
