@@ -8,8 +8,14 @@ const rawData = fs.readFileSync('./AudioIDs.json');
 const audioIDList = JSON.parse(rawData);
 
 
+// create output directory (if it doesn't exist)
+if (!fs.existsSync('./audio')){
+    fs.mkdirSync('./audio');
+}
+
+
 // download file function
-async function downloadFile(fileUrl, outputLocationPath) {
+function downloadFile(fileUrl, outputLocationPath) {
 	const writer = fs.createWriteStream(outputLocationPath);
 
 	return axios({
@@ -36,24 +42,24 @@ async function downloadFile(fileUrl, outputLocationPath) {
 
 
 // get audio URLS
-audioIDList.forEach(async (audioID) => {
+audioIDList.forEach((audioID) => {
 	axios
 		.get(`https://www.roblox.com/library/${audioID}/`)
 		.then((response) => {
 			const data = response.data;
-			const urlStart = data.indexOf("data-mediathumb-url") + 21;
+			const urlStart = data.indexOf('data-mediathumb-url') + 21;
 			const audioContainer = data.substring(urlStart, urlStart + 300);
-			const urlEnd = audioContainer.indexOf("\"");
+			const urlEnd = audioContainer.indexOf('"');
 			const audioURL = audioContainer.substring(0, urlEnd);
 			return audioURL;
 		})
 		.then((audioURL) => {
-			//const audioFile = fs.createWriteStream(`./downloads/${audioID}.ogg`);
 			downloadFile(audioURL, `./audio/${audioID}.ogg`)
 				.then(() => {
 					console.log(`Finished downloading audio with ID: ${audioID}`);
 				})
 				.catch((err) => {
+					fs.unlinkSync(`./audio/${audioID}.ogg`);
 					console.log(`Failed to download audio with ID: ${audioID}`);
 				});
 		})
